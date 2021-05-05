@@ -1,7 +1,8 @@
 import motor.motor_asyncio
 from bson.objectid import ObjectId
+from decouple import config
 
-MONGO_DETAILS = "mongodb://0.0.0.0:27017"
+MONGO_DETAILS = config('MONGO_DETAILS')
 
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
 
@@ -19,9 +20,9 @@ def user_helper(user) -> dict:
         "fullname": user["fullname"],
         "email": user["email"],
         "gender": user["gender"],
-        "birth": user["birth"],
+        "age": user["age"],
         "height": user["height"],
-        "weitht": user["weitht"],
+        "weight": user["weight"],
     }
 # Retrieve all users present in the database
 async def retrieve_users():

@@ -17,11 +17,13 @@ from app.server.models.user import (
 
 router = APIRouter()
 
-@router.post("/", response_description="User data added into the database")
+
+@router.post("/", response_description="user data added into the database")
 async def add_user_data(user: UserSchema = Body(...)):
     user = jsonable_encoder(user)
     new_user = await add_user(user)
     return ResponseModel(new_user, "user added successfully.")
+
 
 @router.get("/", response_description="users retrieved")
 async def get_users():
@@ -38,26 +40,31 @@ async def get_user_data(id):
         return ResponseModel(user, "user data retrieved successfully")
     return ErrorResponseModel("An error occurred.", 404, "user doesn't exist.")
 
-# Update a user with a matching ID
+
 @router.put("/{id}")
-async def update_user(id: str, data: dict):
-    # Return false if an empty request body is sent.
-    if len(data) < 1:
-        return False
-    user = await user_collection.find_one({"_id": ObjectId(id)})
-    if user:
-        updated_user = await user_collection.update_one(
-            {"_id": ObjectId(id)}, {"$set": data}
+async def update_user_data(id: str, req: UpdateUserModel = Body(...)):
+    req = {k: v for k, v in req.dict().items() if v is not None}
+    updated_user = await update_user(id, req)
+    if updated_user:
+        return ResponseModel(
+            "user with ID: {} name update is successful".format(id),
+            "user name updated successfully",
         )
-        if updated_user:
-            return True
-        return False
+    return ErrorResponseModel(
+        "An error occurred",
+        404,
+        "There was an error updating the user data.",
+    )
 
 
-# Delete a user from the database
-@router.delete("/{id}", response_description="Student data deleted from the database")
-async def delete_user(id: str):
-    user = await user_collection.find_one({"_id": ObjectId(id)})
-    if user:
-        await user_collection.delete_one({"_id": ObjectId(id)})
-        return True
+@router.delete("/{id}", response_description="user data deleted from the database")
+async def delete_user_data(id: str):
+    deleted_user = await delete_user(id)
+    if deleted_user:
+        return ResponseModel(
+            "user with ID: {} removed".format(id), "user deleted successfully"
+        )
+    return ErrorResponseModel(
+        "An error occurred", 404, "user with id {0} doesn't exist".format(id)
+    )
+
