@@ -1,6 +1,5 @@
 bson==0.5.10
 click==7.1.2
-decouple==0.0.7
 dnspython==2.1.0
 email-validator==1.1.2
 fastapi==0.63.0
@@ -17,3 +16,4 @@ style==1.1.0
 typing-extensions==3.7.4.3
 update==0.0.1
 uvicorn==0.13.4
+
