@@ -1,6 +1,5 @@
 from typing import Optional
 from pydantic import BaseModel, EmailStr, Field
-from datetime import datetime
 from enum import Enum
 
 
@@ -13,7 +12,6 @@ class Gender(str, Enum):
 class UserSchema(BaseModel):
     # 어떻게 유저데이터가 MongoDB에 저장할것인지 알려주는 규칙? 개념
     # ...은 이 필드가 필수임을 나타낸다. None으로 바꿔도 무방
-    thisYear = datetime.today().year
     fullname: str = Field(...)
     email: EmailStr = Field(...)
     gender: Gender = Field(...)
