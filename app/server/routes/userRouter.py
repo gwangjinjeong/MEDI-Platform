@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Body
 from fastapi.encoders import jsonable_encoder
+import hashlib
 
 from app.server.database import (
     add_user,
@@ -11,18 +12,30 @@ from app.server.database import (
 from app.server.models.user import (
     ErrorResponseModel,
     ResponseModel,
-    UserSchema,
+    UserIn,
+    UserOut,
+    UserInDB,
     UpdateUserModel,
 )
 
 router = APIRouter()
 
+def secure_password_hasher(raw_password: str):
+    encoded_passwd = raw_password.encode()
+    return hashlib.sha256(encoded_passwd).hexdigest()
+def secure_save_user(user_in: UserIn):
+    hashed_password = secure_password_hasher(user_in.password)
+    print(hashed_password)
+    user_in_db = UserInDB(**user_in.dict(), hashed_password=hashed_password)
+    print("User saved! ..not really")
+    return user_in_db
 
-@router.post("/", response_description="user data added into the database")
-async def add_user_data(user: UserSchema = Body(...)):
-    user = jsonable_encoder(user)
-    new_user = await add_user(user)
-    return ResponseModel(new_user, "user added successfully.")
+@router.post("/", response_description="user data added into the database", response_model=UserOut)
+async def add_user_data(user: UserIn = Body(...)):
+    user_secue = secure_save_user(user)
+    user_json = jsonable_encoder(user_secue)
+    new_user = await add_user(user_json)
+    return new_user
 
 
 @router.get("/", response_description="users retrieved")
@@ -67,4 +80,3 @@ async def delete_user_data(id: str):
     return ErrorResponseModel(
         "An error occurred", 404, "user with id {0} doesn't exist".format(id)
     )
-
