@@ -1,10 +1,12 @@
 # 기본
 from fastapi import FastAPI
-from app.server.routes.userRouter import router as UserRouter
+from server.routes.userRouter import router as UserRouter
+# from server.routes.bcmRouter import router as BCMRouter
 
 app = FastAPI()
 
 app.include_router(UserRouter, tags=["User"], prefix="/user")
+# app.include_router(BCMRouter, tags=["bcm"], prefix="/bcm")
 
 
 @app.get("/", tags=["Root"])
