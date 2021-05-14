@@ -3,7 +3,7 @@ from fastapi.encoders import jsonable_encoder
 import hashlib
 from collections import OrderedDict
 
-from server.database import (
+from app.server.database import (
     add_user,
     add_bcm,
     delete_user,
@@ -13,7 +13,7 @@ from server.database import (
     # duplicate_check,
     update_user,
 )
-from server.models.user import (
+from app.server.models.user import (
     ErrorResponseModel,
     ResponseModel,
     UserIn,
