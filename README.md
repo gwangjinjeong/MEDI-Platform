@@ -1,5 +1,7 @@
 # NIRS-Platform
-IDE: GoormIDE
+IDE: GoormIDE   
 App: Flutter (Dart)   
-Restful api server: FastAPI (Python)   
-Database: MongoDB (NoSQL)
+OS: Ubuntu 18.04 LTS
+Restful Api server: FastAPI (Python)   
+Database: Mongodb Atlas (NoSQL)   
+
