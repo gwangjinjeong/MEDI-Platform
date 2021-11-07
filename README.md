@@ -1,2 +1,5 @@
 # NIRS-Platform
-App: Flutter (Dart); Server: Flask (Python); Database: Mysql (SQL)
+IDE: GoormIDE
+App: Flutter (Dart)   
+Restful api server: FastAPI (Python)   
+Database: MongoDB (NoSQL)
